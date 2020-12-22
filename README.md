@@ -24,10 +24,13 @@ https://www.uio.no/studier/emner/matnat/ifi/IN3110/
 ### README
 Every project has its own *README.md* file. 
 
-### Project
-There is a *Project summary* section in each README.md file, which gives a short description of the project. Please 
-check out the pdf file, inside assignment folder of each project, to see more information about the problems that each
-project solve and some additional details.
+### Projects
+There are 5 main projects as you see above. I have developed most of my code using PyCharm, that's why you see a 
+.idea folder above (which you can ignore).
+
+There is a *Project summary* section in the beginning of each README.md file, which gives a short description of the 
+project. Please check out the pdf file, inside assignment folder of each project, to see more information about the 
+problems that each project solve and some additional details.
 
 ### Tasks
 There is a folder called *assignment* inside every project. There is a pdf inside that folder named assignment, which
