@@ -1,0 +1,4 @@
+#!/Users/pooriamehregan/Desktop/ProblemSolving_WithHighLevelLanguage/instapy/venv/bin/python3
+# EASY-INSTALL-SCRIPT: 'numba==0.52.0','numba'
+__requires__ = 'numba==0.52.0'
+__import__('pkg_resources').run_script('numba==0.52.0', 'numba')

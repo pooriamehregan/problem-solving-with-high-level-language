@@ -1,0 +1,15 @@
+
+START <Thu Sep  3 10:24:56 CEST 2020>
+LABEL <task1>
+END   <Thu Sep  3 10:25:11 CEST 2020>
+
+START <Thu Sep  3 10:45:39 CEST 2020>
+LABEL <task1>
+END   <Thu Sep  3 10:45:41 CEST 2020>
+
+START <Thu Sep  3 10:45:46 CEST 2020>
+LABEL <task3>
+END   <Thu Sep  3 10:45:48 CEST 2020>
+
+START <Thu Sep  3 20:24:12 CEST 2020>
+LABEL <task 4>

@@ -1,0 +1,331 @@
+#!python
+
+import argparse
+import logging
+import os
+import sys
+from time import time
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
+import numpy as np
+import cv2
+
+from bin.numba_files.numba_color2sepia import numba_color2sepia
+from bin.numpy_files.numpy_color2sepia import numpy_color2sepia
+from bin.python_files.python_color2gray import python_color2gray
+from bin.numpy_files.numpy_color2gray import numpy_color2gray
+from bin.numba_files.numba_color2gray import numba_color2gray
+from bin.python_files.python_color2sepia import python_color2sepia
+
+parser = argparse.ArgumentParser(description='Add filter to a given image.')
+
+parser.add_argument("-f", "--file",
+                    help="The filename of file to apply filter to")
+parser.add_argument("-se", "--sepia", action='store_true',
+                    help="Select sepia filter")
+parser.add_argument("-st", "--step", type=float,
+                    help="Adjust sepia strength. Type a value between 0 to 1, where 0 is 100%% sepia.")
+parser.add_argument("-g", "--gray", action='store_true',
+                    help="Select gray filter")
+parser.add_argument("-sc", "--scale", nargs=2, type=float,
+                    help="Select x and y factor to resize image. example: 0.5 0.5 will resize both axes by half.")
+parser.add_argument("-i", "--implement", choices=['python', 'numba', 'numpy'],
+                    help="{python|numba|numpy} Choose the implementation")
+parser.add_argument("-o", "--out", help="The output filename")
+
+args = parser.parse_args()
+image = None
+
+
+def grayscale_filter(img_array):
+    """ Make a grayscale copy of the given image (numpy array)
+    :param img_array: a numpy array representing the image
+    :return: grayscaled copy
+    """
+    copy_array = np.array(img_array, dtype=float)
+    copy_array[:, :, 0] *= 0.21
+    copy_array[:, :, 1] *= 0.72
+    copy_array[:, :, 2] *= 0.07
+    copy_array = copy_array.sum(axis=2)
+    return copy_array.astype("uint8")
+
+
+def generate_new_file_name(old_file_name, ext=None):
+    """ adds to file name on the given, for instance if file name is grayscale.jpg
+     and extension is _python, then new file name becomes graysacle_python.jpg.
+    :param old_file_name: the path to process.
+    :param ext: name extension.
+    :return: the extended file name.
+    """
+    splitted_file_name = os.path.splitext(old_file_name)
+    if ext is not None:
+        name = splitted_file_name[0] + ext + splitted_file_name[1]
+        return name
+    return None
+
+
+def man_test(fun, fun_arg, N):
+    """ Calculates the execution time of the given function.
+    :param fun: the function to be timed.
+    :param fun_arg: arguments tu the given function.
+    :param N: number of times to repeat the timing.
+    :return: average execution time.
+    """
+    time_sum = 0.0
+    for i in range(N):
+        t1 = time()
+        fun(fun_arg)
+        t2 = time()
+        time_sum += t2 - t1
+    return time_sum / N
+
+
+# produce_report_file(python_color2gray, 3, (width, height, depth) )
+def produce_report_file(tested_fun, num_of_tests, av_time, test_fun,
+                        dimens, output_file, av_time_py=None, av_time_numpy=None):
+    """ Produces output for report text files.
+    :param tested_fun: which function was tested, i.e. numpy, numba or python.
+    :param num_of_tests: number of test executed on given function.
+    :param av_time: average execution time for function after 3 runs.
+    :param test_fun: what timing function was used, i.e. timeit, or time()
+    :param dimens: dimensions of the image that was used for testing.
+    :param output_file: name of the report file that we are going to save the result to.
+    :param av_time_py: average execution time for python function after 3 runs.
+    :param av_time_numpy: average execution time for numpy function after 3 runs.
+    """
+    with open(output_file, "w") as w_file:
+        output_str = f"Timing: {tested_fun}\n" \
+                     f"Average runtime running {tested_fun} after {num_of_tests} runs:\n" \
+                     f"\t{av_time:.4f} s\n"
+        if av_time_py is not None:
+            times = av_time_py / av_time
+            diff = av_time - av_time_py
+            output_str += f"Average runtime running {tested_fun} is {times:.4f} times\n" \
+                          f"\t{'faster' if diff <= 0.0 else 'slower'} than python_color2gray.\n"
+        if av_time_numpy is not None:
+            times = av_time_numpy / av_time
+            diff = av_time - av_time_numpy
+            output_str += f"Average runtime running {tested_fun} is {times:.4f} times\n" \
+                          f"\t{'faster' if diff <= 0.0 else 'slower'} than numpy_color2gray.\n"
+        output_str += f"Timing performed using: {test_fun}\n" \
+                      f"Image dimensions: {dimens}\n\n"
+
+        w_file.write(output_str)
+
+
+def grayscale_image(input_filename, output_filename=None):
+    """ produce a grayscale version of the given image. The image will also be saved to
+    given output file name, if none are given then it will be saved to with the same file name + _gray.
+    :param input_filename: the image file name
+    :param output_filename: name of the grayscale version
+    :return: grayscale image
+    """
+    img = read_img(input_filename)
+    # converting image to grayscale using numpy.
+    gray_image_numpy = numpy_color2gray(img)  # grayscale image
+
+    if output_filename is None:
+        output_filename = generate_new_file_name(input_filename, "_gray")
+    write_out(gray_image_numpy, output_filename)
+
+    return gray_image_numpy.astype("uint8")
+
+
+def sepia_image(input_filename, output_filename=None):
+    """ produce a sepia version of the given image. The image will also be saved to
+    given output file name, if none are given then it will be saved to with the same file name + _sepia.
+    :param input_filename: the image file name
+    :param output_filename: name of the sepia version
+    :return: sepia image
+    """
+    img = read_img(input_filename)
+    # converting image to grayscale using numpy.
+    sepia_img_numpy = numpy_color2sepia(img)  # grayscale image
+
+    if output_filename is None:
+        output_filename = generate_new_file_name(input_filename, "_sepia")
+    write_out(sepia_img_numpy, output_filename)
+
+    return sepia_img_numpy.astype("uint8")
+
+
+def rescale(img, x=0.0, y=0.0):
+    """ Resizes the given image to the given width and height.
+    :param img: image as numpy array
+    :param x: width between 0-1, For example, following (x, y) will resize both axes by half: 0.5, 0.5
+    :param y: height between 0-1
+    :return: resized version of the image
+    """
+    return cv2.resize(img, (0, 0), fx=x, fy=y)
+
+
+def read_img(input_filename):
+    """ reads image using open cv and return it.
+    :param input_filename: image file name
+    :return: image as array
+    """
+    img = cv2.imread(input_filename)
+    return img
+
+
+def write_out(img, output_file):
+    """ saves the given image with the given name.
+    :param img: image file as numpy array
+    :param output_file: new name of the image that we are saving it with
+    """
+    #    cv2.imwrite(f"{output_file}", img)  # saving to file
+    cv2.imwrite(output_file, img)
+
+
+def apply_filter_weight(k, input_file, sep_img):
+    """ applies weight (k = 0 to 1) to the given image name.
+    :param k: weight value between 0 and 1.
+    :param input_file: name of the image
+    :param sep_img: sepia version of the image, as numpy array.
+    :return: weighted image.
+    """
+    img = read_img(input_file)
+    img = np.array(img, dtype=float)
+    img *= (1 - k)
+    sep_img = np.array(sep_img, dtype=float)
+    sep_img *= k
+    weighted_img = img + sep_img
+    return weighted_img
+
+
+def main():
+    """
+    first ask you to choose an image file, then produces 2 grayscale versions (python and numpy), and 2 sepia version
+    (python and numpy) which will be saved to the same directory as the given image. report text files will be filled
+    with test results (including numba).
+    """
+    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
+    logging.info('Choosing file.')
+    Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
+    file_name = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
+
+    image = cv2.imread(file_name)
+    RGB_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    logging.info('converting image to grayscale,using python.')
+    grayscale_image_py = python_color2gray(RGB_image)  # grayscale image
+    dst_file_name_py = generate_new_file_name(file_name, "_grayscaled_py")  # generate new file name
+    cv2.imwrite(f"{dst_file_name_py}", grayscale_image_py)  # saving to file
+    logging.info('timing pure python')
+    av_py_time = man_test(python_color2gray, RGB_image, 3)
+    logging.info('outputting timing to report file')
+    produce_report_file("python_color2gray",
+                        3,
+                        av_py_time,
+                        "time()",
+                        RGB_image.shape,
+                        "bin/python_files/python_report_color2gray.txt")
+    logging.info('converting image to grayscale using numpy')
+    grayscale_image_numpy = numpy_color2gray(RGB_image)  # grayscale image
+    dst_file_name_numpy = generate_new_file_name(file_name, "_grayscaled_numpy")  # generate new file name
+    cv2.imwrite(f"{dst_file_name_numpy}", grayscale_image_numpy)  # saving to file
+    logging.info('timing numpy')
+    av_numpy_time = man_test(numpy_color2gray, RGB_image, 3)
+    logging.info('output timing result to report file')
+    produce_report_file("numpy_color2gray",
+                        3,
+                        av_numpy_time,
+                        "time()",
+                        RGB_image.shape,
+                        "bin/numpy_files/numpy_report_color2gray.txt",
+                        av_time_py=av_py_time)
+    logging.info('timing numba')
+    av_numba_time = man_test(numba_color2gray, RGB_image, 3)
+    logging.info('output timing result to report file')
+    produce_report_file("numba_color2gray",
+                        3,
+                        av_numba_time,
+                        "time()",
+                        RGB_image.shape,
+                        "bin/numba_files/numba_report_color2gray.txt",
+                        av_time_py=av_py_time,
+                        av_time_numpy=av_numpy_time)
+
+    """ SEPIA """
+    logging.info('converting image to sepia using numpy')
+    sepia_image = python_color2sepia(image)  # sepia image
+    dst_sepia = generate_new_file_name(file_name, "_sepia_py")  # generate new file name
+    cv2.imwrite(f"{dst_sepia}", sepia_image)  # saving to file
+    logging.info('timing pure python')
+    av_py_time = man_test(python_color2sepia, image, 3)
+    logging.info('output timing result to report file')
+    produce_report_file("python_color2sepia",
+                        3,
+                        av_py_time,
+                        "time()",
+                        image.shape,
+                        "bin/python_files/python_report_color2sepia.txt")
+    logging.info('converting image to sepia using numpy')
+    sepia_image_numpy = numpy_color2sepia(image)  # sepia image
+    dst_file_name_numpy = generate_new_file_name(file_name, "_sepia_numpy")  # generate new file name
+    cv2.imwrite(f"{dst_file_name_numpy}", sepia_image_numpy)  # saving to file
+    logging.info('timing numpy')
+    av_numpy_time = man_test(numpy_color2sepia, image, 3)
+    logging.info('output timing result to report file')
+    produce_report_file("numpy_color2sepia",
+                        3,
+                        av_numpy_time,
+                        "time()",
+                        image.shape,
+                        "bin/numpy_files/numpy_report_color2sepia.txt",
+                        av_time_py=av_py_time)
+    logging.info('timing numba')
+    av_numba_time = man_test(numba_color2sepia, image, 3)
+    logging.info('output timing result to report file')
+    produce_report_file("numba_color2sepia",
+                        3,
+                        av_numba_time,
+                        "time()",
+                        image.shape,
+                        "bin/numba_files/numba_report_color2sepia.txt",
+                        av_time_py=av_py_time,
+                        av_time_numpy=av_numpy_time)
+
+if len(sys.argv) == 1:
+    main()
+# check if input file is given
+elif args.file:
+    image = read_img(args.file)  # read image
+    out_file = None
+
+    if args.scale:
+        image = rescale(image, args.scale[0], args.scale[1])  # rescale
+    if args.gray:  # gray filter
+        if args.implement:  # specific implementation is chosen
+            if args.implement == 'python':
+                image = python_color2gray(image)
+            if args.implement == 'numpy':
+                image = numpy_color2gray(image)
+            if args.implement == 'numba':
+                image = numba_color2gray(image)
+        else:  # No specific implementation is chosen
+            image = numba_color2gray(image)
+        out_file = generate_new_file_name(args.file, "_gray")
+    elif args.sepia:  # sepia filter
+        if args.implement:
+            if args.implement == 'python':
+                image = python_color2sepia(image)
+            if args.implement == 'numpy':
+                image = numpy_color2sepia(image)
+            if args.implement == 'numba':
+                image = numba_color2sepia(image)
+        else:
+            image = numpy_color2sepia(image)
+        if args.step:
+            if 0 <= args.step <= 1:  # stepless sepia
+                image = apply_filter_weight(args.step, args.file, image)
+        out_file = generate_new_file_name(args.file, "_sepia")
+    if args.out:
+        write_out(image, args.out)
+    else:  # output image to current directory
+        write_out(image, out_file)
+
+
+
+

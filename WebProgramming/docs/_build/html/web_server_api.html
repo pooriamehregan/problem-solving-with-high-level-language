@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Server API &#8212; assignment6  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Web Visualization API" href="web_visualization_api.html" />
+    <link rel="prev" title="Welcome to assignment6’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-web_server">
+<span id="web-server-api"></span><h1>Web Server API<a class="headerlink" href="#module-web_server" title="Permalink to this headline">¶</a></h1>
+<p>A flask web server.</p>
+<dl class="py attribute">
+<dt id="web_server.current_county">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">current_county</code><a class="headerlink" href="#web_server.current_county" title="Permalink to this definition">¶</a></dt>
+<dd><p>the current selected county chosen by the user. Is shown as h1 header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="web_server.counties">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">counties</code><a class="headerlink" href="#web_server.counties" title="Permalink to this definition">¶</a></dt>
+<dd><p>name and corresponding parameter (which is passed to plotter methods) of all counties
+plus all_counties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="web_server.app">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">app</code><a class="headerlink" href="#web_server.app" title="Permalink to this definition">¶</a></dt>
+<dd><p>the flask server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Flask</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.handle_selection">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">handle_selection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.handle_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles dropdown selection by updating the chart to chosen value on dropdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>calls root which starts re-rendering process of html.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.plot_visualization">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">plot_visualization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.plot_visualization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders plot_chart.html.
+It sets header of html to be county name,
+and fills dropdown menu with counties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>render_template(‘plot_chart.html’, counties=counties, county=current_county)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.plot_visualization_json">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">plot_visualization_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.plot_visualization_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets called by plot_chart.html template. It creates a layered chart,
+then reads and returns it as json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>layered chart as json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.plot_visualization_json_1">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">plot_visualization_json_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.plot_visualization_json_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets called by plot_chart.html template. It creates a new cases chart,
+then reads and returns it as json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>new cases chart as json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.plot_visualization_json_2">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">plot_visualization_json_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.plot_visualization_json_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function gets called by plot_chart.html template. It creates a Cumulative number chart,
+then reads and returns it as json.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Cumulative number chart as json</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_server.root">
+<code class="sig-prename descclassname">web_server.</code><code class="sig-name descname">root</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#web_server.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is our root function which doesn’t do anything other than calling than plot_visualization to render html.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>plot_visualization()</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">assignment6</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Web Server API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="web_visualization_api.html">Web Visualization API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to assignment6’s documentation!</a></li>
+      <li>Next: <a href="web_visualization_api.html" title="next chapter">Web Visualization API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, pooriam.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/web_server_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

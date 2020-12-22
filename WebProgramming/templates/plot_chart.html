@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.8.1"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+  <title>Covid 19 Charts</title>
+</head>
+<body>
+<div align="center">
+    <a href="show_help_doc">See Documentation</a>
+</div>
+<h1 align="center">
+  {{ county }}
+</h1>
+
+<div align="center">
+    <form method="POST" action="handle_selection" >
+  <label>
+    <select name="selected">
+      <option value="" selected disabled hidden>Choose County</option>
+      {% for county in counties %}
+      <option >{{county}}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <input type="submit" value="Submit">
+</form>
+<br>
+
+<br>
+  <div id="vis"></div>
+  <script>
+    (async function(vegaEmbed) {
+      var response = await fetch("plot_chart.json");
+      var spec = await response.json();
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+  </script>
+  <br>
+  <br>
+  <div align="center" id="vis_1"></div>
+  <script>
+    (async function(vegaEmbed) {
+      var response = await fetch("plot_chart_1.json");
+      var spec = await response.json();
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis_1');
+      vegaEmbed("#vis_1", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+  </script>
+  <br>
+  <br>
+  <div align="center" id="vis_2"></div>
+  <script>
+    (async function(vegaEmbed) {
+      var response = await fetch("plot_chart_2.json");
+      var spec = await response.json();
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis_2');
+      vegaEmbed("#vis_2", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+  </script>
+</div>
+
+</body>
+</html>

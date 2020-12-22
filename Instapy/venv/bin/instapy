@@ -1,0 +1,4 @@
+#!/Users/pooriamehregan/Desktop/ProblemSolving_WithHighLevelLanguage/instapy/venv/bin/python3
+# EASY-INSTALL-SCRIPT: 'instapy==0.0.1','instapy'
+__requires__ = 'instapy==0.0.1'
+__import__('pkg_resources').run_script('instapy==0.0.1', 'instapy')

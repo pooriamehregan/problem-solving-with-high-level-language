@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Visualization API &#8212; assignment6  documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Web Server API" href="web_server_api.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-web_visualization">
+<span id="web-visualization-api"></span><h1>Web Visualization API<a class="headerlink" href="#module-web_visualization" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="web_visualization.main">
+<code class="sig-prename descclassname">web_visualization.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">county</span><span class="o">=</span><span class="default_value">'all_counties'</span></em>, <em class="sig-param"><span class="n">time_start</span><span class="o">=</span><span class="default_value">'2020-01-01'</span></em>, <em class="sig-param"><span class="n">time_end</span><span class="o">=</span><span class="default_value">'2020-11-10'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_visualization.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads data from a .csv file and generates a labeled,3 nice plot of date vs. ”number of reported cases” or
+date vs. ”cumulative number of cases”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>county</strong> (<em>str</em><em>, </em><em>optional</em>) – the county to show plot for.</p></li>
+<li><p><strong>time_start</strong> (<em>str</em><em>, </em><em>optional</em>) – start date</p></li>
+<li><p><strong>time_end</strong> (<em>str</em><em>, </em><em>optional</em>) – end date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame that contains information of the given time frame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_visualization.plot_both">
+<code class="sig-prename descclassname">web_visualization.</code><code class="sig-name descname">plot_both</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">county</span><span class="o">=</span><span class="default_value">'all_counties'</span></em>, <em class="sig-param"><span class="n">time_start</span><span class="o">=</span><span class="default_value">'2020-01-01'</span></em>, <em class="sig-param"><span class="n">time_end</span><span class="o">=</span><span class="default_value">'2020-11-10'</span></em>, <em class="sig-param"><span class="n">aggr</span><span class="o">=</span><span class="default_value">'layer'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_visualization.plot_both" title="Permalink to this definition">¶</a></dt>
+<dd><p>displaying Number of reported cases and Cumulative number of cases in one plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>county</strong> (<em>str</em><em>, </em><em>optional</em>) – the county to show plot for.</p></li>
+<li><p><strong>time_start</strong> (<em>str</em><em>, </em><em>optional</em>) – start date</p></li>
+<li><p><strong>time_end</strong> (<em>str</em><em>, </em><em>optional</em>) – end date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>altair Chart</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>altair.vegalite.v4.api.LayerChart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_visualization.plot_cumulative_cases">
+<code class="sig-prename descclassname">web_visualization.</code><code class="sig-name descname">plot_cumulative_cases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">county</span><span class="o">=</span><span class="default_value">'all_counties'</span></em>, <em class="sig-param"><span class="n">time_start</span><span class="o">=</span><span class="default_value">'2020-01-01'</span></em>, <em class="sig-param"><span class="n">time_end</span><span class="o">=</span><span class="default_value">'2020-11-10'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_visualization.plot_cumulative_cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot a line plot which shows cumulative number of reported cases of covid-19 vs date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>county</strong> (<em>str</em><em>, </em><em>optional</em>) – the county to show plot for.</p></li>
+<li><p><strong>time_start</strong> (<em>str</em><em>, </em><em>optional</em>) – start date</p></li>
+<li><p><strong>time_end</strong> (<em>str</em><em>, </em><em>optional</em>) – end date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>altair Chart</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>altair.vegalite.v4.api.LayerChart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="web_visualization.plot_reported_cases">
+<code class="sig-prename descclassname">web_visualization.</code><code class="sig-name descname">plot_reported_cases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">county</span><span class="o">=</span><span class="default_value">'all_counties'</span></em>, <em class="sig-param"><span class="n">time_start</span><span class="o">=</span><span class="default_value">'2020-01-01'</span></em>, <em class="sig-param"><span class="n">time_end</span><span class="o">=</span><span class="default_value">'2020-11-10'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#web_visualization.plot_reported_cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot a bar plot which shows number of reported new cases of covid-19 vs date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>county</strong> (<em>str</em><em>, </em><em>optional</em>) – the county to show plot for.</p></li>
+<li><p><strong>time_start</strong> (<em>str</em><em>, </em><em>optional</em>) – start date</p></li>
+<li><p><strong>time_end</strong> (<em>str</em><em>, </em><em>optional</em>) – end date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>altair Chart</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>altair.vegalite.v4.api.LayerChart</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">assignment6</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="web_server_api.html">Web Server API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Web Visualization API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="web_server_api.html" title="previous chapter">Web Server API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, pooriam.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/web_visualization_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
