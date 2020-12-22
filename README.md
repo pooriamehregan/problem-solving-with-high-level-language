@@ -13,8 +13,10 @@ Includes training in:
 - WebScraping
 - Regular expression
 - Testing
+- Debugging 
 - Data-analysing/visualization and machine-learning
 - Peer-Reviewing
+- Documentation
 
 Course page:
 
