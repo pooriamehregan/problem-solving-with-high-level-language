@@ -1,4 +1,4 @@
-#Project summary
+# Project summary
 - test driven development
 - implementing class Arrays (like numpy) in python.
 - writing tests using pytest
@@ -9,7 +9,7 @@
    
 Check out the *"assignment.pdf"* inside assignment folder for more details on the project.
 
-#Environment requirement
+# Environment requirement
 Recommended python version = 3.9 .
 I would also recommend setting up virtual environment like *venv*.
 
@@ -23,13 +23,13 @@ Once you’ve created a virtual environment, you may activate it.
 $ source tutorial-env/bin/activate
 ```
 
-#Dependencies
+# Dependencies
 pytest 6.2.1
 ```
 $ pip install -U pytest
 ```
 
-#How to run scripts
+# How to run scripts
 tests:
 ```
 $ pytest

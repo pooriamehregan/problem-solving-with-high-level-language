@@ -1,4 +1,4 @@
-#Project summary
+# Project summary
 move:
 - A bash function "*move*", which moves all the files in a directory to another user defined directory.
 - Optionally choose between moving all files in a directory or only files of one type for example move 
@@ -15,7 +15,7 @@ track.sh:
 
 For detailed info about these tasks, see the pdf file named "*assignment*".
 
-#General info
+# General info
 The *LOGFILE* that you see in this folder is just a copy from the original LOGFILE which I created in ∼/.local/share/.
 
 I created the "*move*" like an executable command file, and "track.sh" like a script (that contains 3 functions) to 
@@ -27,7 +27,7 @@ function I took care of a special case where a task is not finished yet, in that
 that task is shown to user as the logging time.
 
 
-###move
+### move
 First source move.sh:
 ```bash
 $ source move.sh 
@@ -43,7 +43,7 @@ Hint: dst variable should have the full path to the destination directory:
 $ move ~/Desktop/source/ ~/Desktop/destination "*.txt"
 ```
 
-###track.sh
+### track.sh
 - Step one:
 change the <username> at line 2 in track.sh to be able to test track.sh on the pc you're on.
 - step two: source track.sh

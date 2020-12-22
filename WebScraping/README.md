@@ -1,4 +1,4 @@
-#Project summary
+# Project summary
 1. Make Html requests, then save (*in the folder named requesting_url*) and return the response as html data.
 2. Using **Regular Expression** to filter out:
     - general hyperlinks
@@ -15,14 +15,14 @@ the assignment folder, called *"Peer_Review.pdf"*.
    
 Check out the *"assignment.pdf"* inside assignment folder for more details on the project.
 
-#General info
+# General info
 There are 5 folders for each task, containing the results from last run. You could as well check them out before
 you run your own commands.
 
 I have used a logging library to show the user execution progress. Logging can be turned off using the following
 `logging.disable(logging.INFO).`
 
-##Environment Requirements:
+## Environment Requirements:
 Make sure you hav *python3* installed.
 
 Then install virtual environment by executing these commands:
@@ -34,7 +34,7 @@ $ virtualenv -p python3 venv-web_programming
 $ source venv-web_programming/bin/activate
 ```
 
-##Dependencies:
+## Dependencies:
 BeautifulSoup
 ```bash
 $ pip install beautifulsoup4
@@ -56,7 +56,7 @@ $ pip install lxml
 ```
 
 
-##How to run the scripts:
+## How to run the scripts:
 You can run this script which in turn calls methods that run solutions for task 5.1, 5.2, and 5.3 :
 ```
 python3 main.py
@@ -72,7 +72,7 @@ fetch_player_statistics.py:
 python3 fetch_player_statistics.py
 ````
 
-#Decision explanation
+# Decision explanation
 I could have included the code for executing *time planner* and *fetch player statistics* in `main.py` like I did for 
 tasks *5.1, 5.2, 5.3* but since assignment text explicitly mentioned that they should be inside their own script, then
 I followed the assignment text and called them from inside their own scripts. That's why you need only one command 
