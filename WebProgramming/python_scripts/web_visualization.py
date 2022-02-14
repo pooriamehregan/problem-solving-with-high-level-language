@@ -80,7 +80,7 @@ def main(county='all_counties', time_start='2020-01-01', time_end='2020-11-10'):
     :return: DataFrame that contains information of the given time frame
     :rtype: pandas.DataFrame
     """
-    file_name = 'csv_files/' + county + '.csv'
+    file_name = '../csv_files/' + county + '.csv'
     reported = pd.read_csv(file_name,
                            sep=';',
                            parse_dates=['Dato'],
